@@ -82,16 +82,16 @@ def get_csv_dict_writer(vendor: str, symbol: str, columns: list) -> DictWriter:
 
 
 def write_rows_to_file(source: str, symbol: str, columns: list, rows: List[Dict]):
-    if len(rows) > 0:
-        writer = get_csv_dict_writer(
-            vendor=source,
-            symbol=symbol,
-            columns=columns
-        )
-        for row in rows:
-            writer.writerow(row)
+    writer = get_csv_dict_writer(
+        vendor=source,
+        symbol=symbol,
+        columns=columns
+    )
+    for row in rows:
+        writer.writerow(row)
 
-        security_file = get_output_file(vendor=source, symbol=symbol)
+    security_file = get_output_file(vendor=source, symbol=symbol)
+    if security_file.is_file():
         insert_security_to_db(security_file)
 
 
@@ -155,9 +155,3 @@ def insert_exchanges_str(exchange: Exchange) -> str:
     ('{exchange.code}', '{exchange.name}', '{exchange.timezone}', '{exchange.properties}', '{exchange.trading_session}')
     """
     return insert_str
-
-
-if __name__ == '__main__':
-
-    for file in output_dir.iterdir():
-        print(insert_exchanges_str(Exchange(file)))

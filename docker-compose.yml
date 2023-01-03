@@ -15,10 +15,10 @@ services:
     volumes:
       - ./db/script.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
-#  ohlcv-service:
-#    build:
-#      context: .
-#      dockerfile: ./ohlcv/Dockerfile
-#    image: ticker_save
+  ohlcv-service:
+    build:
+      context: .
+      dockerfile: ./ohlcv/Dockerfile
+    image: ticker_save
 #    volumes:
 #      - ./output:/app/output

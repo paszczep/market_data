@@ -59,13 +59,17 @@ class Security:
             'finnhub': FinnhubOHLCV}
 
         rows = [ohlcv_row[exchange](line).__dict__() for line in reader]
-        print(len(rows))
+
+        if len(rows) == 0:
+            print('what the fuck')
+
         self.ticker = f'{exchange}:{ticker_symbol}'
         self.symbol = ticker_type
         self.name = ticker_symbol
         self.isin = 'foo'
         self.conid = 'bar'
         self.exchange = exchange
+        # print(self.ticker, len(rows))
         self.last_record = datetime.fromtimestamp(int(rows[-1]['timestamp']))
         self.listed = False
         self.status_history = json.dumps('foo-bar')
