@@ -1,0 +1,10 @@
+# Build docker image
+# set -a
+# source .env
+docker-compose build
+
+# Run container
+docker-compose --env-file .env up
+
+# Verify operation
+# docker container list
