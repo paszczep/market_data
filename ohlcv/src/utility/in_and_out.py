@@ -4,25 +4,25 @@ import json
 from csv import DictWriter
 from pathlib import Path
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, TextIO, Tuple
 import logging
 import dotenv
 
 
 def get_base_dir() -> Path:
-    base_dir = Path(__file__).parent.parent.parent.parent.resolve()
+    base_dir = Path(__file__).parent.parent.parent.parent
     logging.info(f"getting base directory at {base_dir}")
     return base_dir
 
 
 def load_env_variables():
-    dotenv_file_path_str = get_base_dir() / '.env'
+    dotenv_file_path_str = get_base_dir() / 'ohlcv' / '.env'
     dotenv.load_dotenv(dotenv_file_path_str.resolve())
 
 
 def get_config_file_path() -> Path:
     base_dir = get_base_dir()
-    config_json_file_path = base_dir / 'config.json'
+    config_json_file_path = base_dir / 'ohlcv' / 'config.json'
     logging.info(f"getting config file at {config_json_file_path.resolve()}")
     return config_json_file_path
 
@@ -70,19 +70,24 @@ def get_output_file(vendor: str, symbol: str, output_path: Path = output_dir) ->
     return file_path
 
 
-def get_csv_dict_writer(vendor: str, symbol: str, columns: list) -> DictWriter:
+def open_output_file(file_path: Path):
+    open_file = open(file_path, 'a', newline='')
+    return open_file
+
+
+def get_csv_dict_writer_and_file(vendor: str, symbol: str, columns: list) -> Tuple[DictWriter, TextIO]:
     file_path = get_output_file(vendor, symbol)
     isfile = Path.is_file(file_path)
-    csv_file = open(file_path, 'a', newline='')
+    csv_file = open_output_file(file_path)
     dict_writer = DictWriter(csv_file, fieldnames=columns, delimiter=';')
     if not isfile:
         logging.info(f"created file {file_path.name}")
         dict_writer.writeheader()
-    return dict_writer
+    return dict_writer, csv_file
 
 
-def write_rows_to_file(source: str, symbol: str, columns: list, rows: List[Dict]):
-    writer = get_csv_dict_writer(
+def write_rows_to_file_and_db(source: str, symbol: str, columns: list, rows: List[Dict]):
+    writer, file = get_csv_dict_writer_and_file(
         vendor=source,
         symbol=symbol,
         columns=columns
@@ -90,7 +95,10 @@ def write_rows_to_file(source: str, symbol: str, columns: list, rows: List[Dict]
     for row in rows:
         writer.writerow(row)
 
+    file.close()
+
     security_file = get_output_file(vendor=source, symbol=symbol)
+
     if security_file.is_file():
         insert_security_to_db(security_file)
 

@@ -1,7 +1,7 @@
 {
   "time_bar": 300,
   "run_until": 4800000000,
-  "historic_range": 1671722400,
+  "historic_range": 1672946694,
   "testnet": false,
   "debug": false,
   "datetime_format": "%Y-%m-%d %H:%M:%S",

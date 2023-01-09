@@ -1,5 +1,5 @@
 import finnhub
-from finnhub_service import finnhub_client, get_base_dir, write_rows_to_file
+from finnhub_service import finnhub_client, get_base_dir, write_rows_to_file_and_db
 
 
 def get_crypto_profile(symbol: str, finnhub_client: finnhub.Client = finnhub_client):
@@ -36,7 +36,7 @@ def lookup_stock():
             rows.append(row)
 
     keys = ['search', 'description', 'displaySymbol', 'symbol', 'type', 'primary']
-    write_rows_to_file(
+    write_rows_to_file_and_db(
         source='finnhub',
         symbol='symbol_lookup',
         columns=keys,

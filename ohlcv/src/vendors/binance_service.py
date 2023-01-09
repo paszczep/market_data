@@ -1,5 +1,5 @@
 from typing import List, Dict
-from ohlcv.src.utility.in_and_out import write_rows_to_file, config, \
+from ohlcv.src.utility.in_and_out import write_rows_to_file_and_db, config, \
     timestamp_to_datetime, get_last_open_time, split_time
 from ohlcv.src.vendors.binance_utility import debug_dict, Client, get_client
 import logging
@@ -70,7 +70,7 @@ def write_data_row(
                 start_timestamp=start + config.time_bar,
                 end_timestamp=end)
             if len(rows) > 0:
-                write_rows_to_file(source=source, symbol=symbol, rows=rows, columns=config.value_labels)
+                write_rows_to_file_and_db(source=source, symbol=symbol, rows=rows, columns=config.value_labels)
 
 
 if __name__ == '__main__':

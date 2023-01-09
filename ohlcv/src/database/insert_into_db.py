@@ -1,7 +1,6 @@
 from ohlcv.src.database.security import Security, Exchange
-from ohlcv.src.database.connect import db_cursor, DB_CONNECTION, DB_EXCHANGES, DB_SECURITIES
+from ohlcv.src.database.connect import db_cursor, db_connection, DB_EXCHANGES, DB_SECURITIES
 import logging
-import json
 from pathlib import Path
 
 existing_exchanges = DB_EXCHANGES
@@ -45,12 +44,9 @@ def insert_exchanges_str(exchange: Exchange) -> str:
 
 
 def insert_security_to_db(file: Path):
-    # print('INSERT ', file)
     security = Security(file)
-    cursor = db_cursor()
-    connection = DB_CONNECTION
-    print(json.loads(security.ohlcv))
-    print(security.ticker)
+    connection = db_connection()
+    cursor = db_cursor(connection)
     if security.ticker not in existing_securities:
         insert_query = create_insert_security_query(security)
         logging.info(f'inserting {security.ticker} into database')
@@ -60,8 +56,8 @@ def insert_security_to_db(file: Path):
         update_query = update_ohlcv_in_db_query(security)
         logging.info(f'updating {security.ticker} in database')
         cursor.execute(update_query)
-
     connection.commit()
+    connection.close()
 
 
 if __name__ == '__main__':

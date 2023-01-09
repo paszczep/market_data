@@ -4,7 +4,7 @@ from typing import Callable
 from os import environ
 import time
 from ohlcv.src.utility.in_and_out import load_env_variables, \
-    config, write_rows_to_file, timestamp_to_datetime, get_last_open_time, split_time, get_base_dir
+    config, write_rows_to_file_and_db, timestamp_to_datetime, get_last_open_time, split_time, get_base_dir
 import logging
 
 load_env_variables()
@@ -66,7 +66,7 @@ def unwind_records(records_dict: dict, symbol: str, ticker_type: str):
         record_dicts = [debug_dict(record_dict) for record_dict in record_dicts]
         columns.append('debug')
 
-    write_rows_to_file(
+    write_rows_to_file_and_db(
         symbol=symbol,
         rows=record_dicts,
         columns=columns,
