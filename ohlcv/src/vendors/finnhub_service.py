@@ -3,11 +3,11 @@ from finnhub.exceptions import FinnhubAPIException
 from typing import Callable
 from os import environ
 import time
-from ohlcv.src.utility.in_and_out import load_env_variables, \
-    config, write_rows_to_file_and_db, timestamp_to_datetime, get_last_open_time, split_time, get_base_dir
+from ohlcv.src.utility.in_and_out import config, write_rows_to_file_and_db, timestamp_to_datetime, get_last_open_time, \
+    split_time
 import logging
 
-load_env_variables()
+# load_env_variables()
 
 api_key = environ['finnhub_API_Key']
 
@@ -114,10 +114,3 @@ def run_finnhub_stock_tickers(end_timestamp: int):
         ticker_func=get_stock_candles,
         ticker_list=config.stock_symbols
     )
-
-
-if __name__ == '__main__':
-    time = int(time.time() - 30000)
-    time_ago = time - 300000
-    test_candles = get_stock_candles('GOOGL', time_ago, time)
-    print(test_candles)

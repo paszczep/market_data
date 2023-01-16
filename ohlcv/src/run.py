@@ -2,10 +2,11 @@ import sys
 from pathlib import Path
 path_to_append = str(Path.cwd().parent)
 sys.path.append(path_to_append)
-from ohlcv.src.utility.schedule import run_scheduled_binance, run_scheduled_finnhub_crypto, run_scheduled_finnhub_stock
 from ohlcv.src.utility.in_and_out import timestamp_to_datetime, config
+from ohlcv.src.utility.schedule import run_scheduled_binance, run_scheduled_finnhub_crypto, run_scheduled_finnhub_stock
 import logging
 from multiprocessing import Process
+
 
 logging.basicConfig(
     level=logging.INFO,

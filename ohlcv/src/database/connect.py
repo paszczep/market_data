@@ -1,18 +1,30 @@
 import psycopg2
+from os import environ
+from pathlib import Path
+import logging
+import dotenv
 
-POSTGRES_DB = 'keiser'
-POSTGRES_USER = 'henswurst'
-POSTGRES_PASSWORD = 'password1234'
-HOST = 'database'
-# HOST = 'localhost'
+
+def get_base_dir() -> Path:
+    base_dir = Path(__file__).parent.parent.parent.parent
+    logging.info(f"getting base directory at {base_dir}")
+    return base_dir
+
+
+def load_env_variables():
+    dotenv_file_path_str = get_base_dir() / 'ohlcv' / '.env'
+    dotenv.load_dotenv(dotenv_file_path_str.resolve())
+
+
+load_env_variables()
 
 
 def db_connection():
     connection = psycopg2.connect(
-        host=HOST,
-        database=POSTGRES_DB,
-        user=POSTGRES_USER,
-        password=POSTGRES_PASSWORD
+        host=environ['HOST'],
+        database=environ['POSTGRES_DB'],
+        user=environ['POSTGRES_USER'],
+        password=environ['POSTGRES_PASSWORD']
     )
 
     return connection

@@ -2,9 +2,9 @@ import logging
 import time
 from binance import Client
 from os import environ
-from ohlcv.src.utility.in_and_out import config, load_env_variables, timestamp_to_datetime
+from ohlcv.src.utility.in_and_out import config, timestamp_to_datetime
 
-load_env_variables()
+# load_env_variables()
 API_Key = environ['BINANCE_KEY']
 API_Secret = environ['BINANCE_SECRET']
 

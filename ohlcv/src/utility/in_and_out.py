@@ -15,11 +15,6 @@ def get_base_dir() -> Path:
     return base_dir
 
 
-def load_env_variables():
-    dotenv_file_path_str = get_base_dir() / 'ohlcv' / '.env'
-    dotenv.load_dotenv(dotenv_file_path_str.resolve())
-
-
 def get_config_file_path() -> Path:
     base_dir = get_base_dir()
     config_json_file_path = base_dir / 'ohlcv' / 'config.json'

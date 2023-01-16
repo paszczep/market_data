@@ -2,14 +2,10 @@ version: '3.8'
 services:
   database:
     image: postgres:14.1-alpine
-#    env_file: .env
     environment:
-      - POSTGRES_DB=keiser
-      - POSTGRES_USER=henswurst
-      - POSTGRES_PASSWORD=password1234
-#      - POSTGRES_DB=${POSTGRES_DB}
-#      - POSTGRES_USER=${POSTGRES_USER}
-#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
       - '5432:5432'
     volumes:
@@ -20,5 +16,3 @@ services:
       context: .
       dockerfile: ./ohlcv/Dockerfile
     image: ticker_save
-#    volumes:
-#      - ./output:/app/output
